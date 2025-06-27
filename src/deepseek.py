@@ -16,7 +16,7 @@ logging.basicConfig(
 load_dotenv()
 
 openai_api_key = os.getenv("DEEPSEEK_API_KEY")
-model_names = ["deepseek-chat"]
+model_names = ["deepseek-reasoner"]
 
 
 def test_model(model_name, data):
