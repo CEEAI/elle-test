@@ -3,9 +3,8 @@ import copy
 import json
 import logging
 import os
-
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,24 +14,20 @@ logging.basicConfig(
 
 load_dotenv()
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
 model_names = [
-    "gpt-4o-2024-11-20",
-    "gpt-4o-mini-2024-07-18",
-    "o1-2024-12-17",
-    "o1-mini-2024-09-12",
-    "o3-mini-2025-01-31",
+    'qwq:32b-fp16',
+    'gemma3:27b-it-fp16',
 ]
-
 
 def test_model(model_name, data):
     try:
         data_copy = copy.deepcopy(data)
-        llm_chat = ChatOpenAI(
-            api_key=openai_api_key,
-            model_name=model_name,
-            streaming=False,
+        llm_chat = ChatOllama(
+            model = model_name,
+            disable_streaming=True,
             verbose=False,
+            base_url = os.getenv("OLLAMA_BASE_URL"),
+            client_kwargs={"headers": {"Authorization": f"Bearer {os.getenv('OLLAMA_BEAR_TOKEN')}"}},
         )
         responses = []
         for item in data_copy:
